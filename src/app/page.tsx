@@ -403,13 +403,18 @@ export default function Home() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
                       key={post.id}
-                      className="group relative overflow-hidden rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow h-[480px] sm:h-[520px] w-full max-w-[350px] mx-auto flex flex-col"
+                      className="group relative overflow-hidden rounded-2xl bg-slate-100 border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 w-full max-w-[350px] mx-auto aspect-[4/5] flex flex-col"
                     >
-                      <div className={`relative w-full flex-grow bg-slate-900 ${isVertical ? '' : 'aspect-video'}`}>
+                      {/* Base Image / Iframe Container */}
+                      <div className="absolute inset-0 w-full h-full pointer-events-none overflow-hidden bg-slate-900">
                         {embedUrl ? (
                            <iframe 
                              src={embedUrl}
-                             className="absolute inset-0 w-full h-full border-0 block"
+                             className={`w-full border-0 block ${
+                               platform === 'instagram' 
+                               ? 'h-[calc(100%+130px)] -mt-[65px]' 
+                               : 'h-full'
+                             }`}
                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                              allowFullScreen
                              scrolling="no"
@@ -424,11 +429,40 @@ export default function Home() {
                         )}
                       </div>
                       
-                      {post.caption && (
-                        <div className="p-4 bg-white">
-                          <p className="text-sm text-slate-700 line-clamp-2">{post.caption}</p>
+                      {/* Subtle play badge for video content on default view */}
+                      {isVertical && (
+                        <div className="absolute top-3 right-3 bg-black/30 backdrop-blur-sm p-1.5 rounded-full text-white/90 z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                          <PlayCircle className="w-5 h-5" />
                         </div>
                       )}
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5 z-20">
+                        <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex flex-col gap-3">
+                          
+                          {/* Caption */}
+                          {post.caption ? (
+                            <p className="text-sm text-slate-200 line-clamp-3 leading-relaxed">
+                              {post.caption}
+                            </p>
+                          ) : (
+                            <p className="text-sm text-slate-300 italic">
+                              View this post on {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                            </p>
+                          )}
+                          
+                          {/* Action Button */}
+                          <a 
+                            href={post.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 w-full py-2.5 mt-2 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 text-white text-sm font-bold transition-all shadow-lg hover:shadow-xl"
+                          >
+                            {platform === 'instagram' ? <Instagram className="w-4 h-4" /> : platform === 'youtube' ? <Youtube className="w-4 h-4" /> : <Facebook className="w-4 h-4" />}
+                            {isShort || platform === 'instagram' ? 'Watch Reel' : 'View Post'}
+                          </a>
+                        </div>
+                      </div>
                     </motion.div>
                   );
                 })}
