@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Heart } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
@@ -35,26 +36,24 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "glass-nav shadow-sm py-3"
-          : "bg-white/90 md:bg-transparent py-4 border-b border-transparent"
-      }`}
+      className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
+        ? "glass-nav shadow-sm py-2"
+        : "bg-white/95 md:bg-transparent py-2 border-b border-transparent"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between min-h-[88px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-md shadow-primary/20 group-hover:scale-105 transition-transform duration-200">
-              <Heart className="w-6 h-6 fill-current" />
-            </div>
-            <div>
-              <span className="text-xl font-bold tracking-tight text-secondary group-hover:text-primary transition-colors duration-200">
-                SewaPrith
-              </span>
-              <span className="block text-[10px] font-semibold text-primary tracking-widest uppercase">
-                Foundation
-              </span>
+          <Link href="/" className="flex items-center group ml-14">
+            <div className="h-[105px] w-[180px] overflow-hidden flex items-center justify-center pt-3">
+              <Image
+                src="/logo.png"
+                alt="SewaPrith Foundation"
+                width={200}
+                height={100}
+                className="h-[70px] w-auto object-contain scale-[1.25] group-hover:scale-[1.3] transition-transform duration-200 drop-shadow-sm"
+                priority
+              />
             </div>
           </Link>
 
@@ -66,11 +65,10 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-semibold transition-colors duration-200 ${
-                    isActive
-                      ? "text-primary border-b-2 border-primary pb-1"
-                      : "text-secondary/80 hover:text-primary"
-                  }`}
+                  className={`text-sm font-semibold transition-colors duration-200 ${isActive
+                    ? "text-primary border-b-2 border-primary pb-1"
+                    : "text-secondary/80 hover:text-primary"
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -120,13 +118,15 @@ export default function Navbar() {
               className="fixed right-0 top-0 bottom-0 w-72 bg-white z-50 shadow-2xl p-6 flex flex-col md:hidden"
             >
               <div className="flex items-center justify-between mb-8">
-                <Link href="/" className="flex items-center gap-2" onClick={() => setIsOpen(false)}>
-                  <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-white">
-                    <Heart className="w-5 h-5 fill-current" />
-                  </div>
-                  <div>
-                    <span className="text-lg font-bold text-secondary">SewaPrith</span>
-                    <span className="block text-[9px] font-semibold text-primary uppercase">Foundation</span>
+                <Link href="/" className="flex items-center" onClick={() => setIsOpen(false)}>
+                  <div className="h-[60px] w-[150px] overflow-hidden flex items-center justify-center">
+                    <Image
+                      src="/logo.png"
+                      alt="SewaPrith Foundation"
+                      width={180}
+                      height={90}
+                      className="h-[100px] w-auto object-contain scale-[1.25]"
+                    />
                   </div>
                 </Link>
                 <button
@@ -145,11 +145,10 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsOpen(false)}
-                      className={`text-base font-bold py-2 px-3 rounded-lg transition-colors ${
-                        isActive
-                          ? "text-white bg-primary"
-                          : "text-secondary/80 hover:text-primary hover:bg-slate-50"
-                      }`}
+                      className={`text-base font-bold py-2 px-3 rounded-lg transition-colors ${isActive
+                        ? "text-white bg-primary"
+                        : "text-secondary/80 hover:text-primary hover:bg-slate-50"
+                        }`}
                     >
                       {item.name}
                     </Link>

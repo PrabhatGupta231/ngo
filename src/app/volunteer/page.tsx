@@ -28,6 +28,7 @@ type VolunteerFormData = z.infer<typeof volunteerSchema>;
 export default function Volunteer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -40,28 +41,35 @@ export default function Volunteer() {
 
   const onSubmit = async (data: VolunteerFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
 
-    // Formspree / Webhook endpoint simulation
-    // You would replace this URL with your Formspree endpoint: https://formspree.io/f/{your-form-id}
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Volunteer application submitted successfully:", data);
-      
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error ?? "Submission failed. Please try again.");
+      }
+
       setIsSuccess(true);
-      setIsSubmitting(false);
-      
+
       // Fire confetti celebration
       confetti({
         particleCount: 120,
         spread: 70,
         origin: { y: 0.6 }
       });
-      
+
       reset();
     } catch (err) {
-      console.error(err);
+      const message = err instanceof Error ? err.message : "Submission failed. Please try again.";
+      setSubmitError(message);
+    } finally {
       setIsSubmitting(false);
-      alert("Submission failed. Please try again.");
     }
   };
 
@@ -138,7 +146,7 @@ export default function Volunteer() {
                   className={`w-full bg-slate-50 border text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-primary text-secondary font-medium ${
                     errors.phone ? "border-rose-450" : "border-slate-200"
                   }`}
-                  placeholder="9876543210"
+                  placeholder="8417801736"
                 />
                 {errors.phone && (
                   <p className="text-xs text-rose-500 font-semibold pl-1">{errors.phone.message}</p>
@@ -227,7 +235,7 @@ export default function Volunteer() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Sending Webhook payload to Formspree...
+                  Sending your application...
                 </>
               ) : (
                 <>
@@ -236,6 +244,13 @@ export default function Volunteer() {
                 </>
               )}
             </button>
+
+            {/* Inline Error Banner */}
+            {submitError && (
+              <div className="mt-3 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3 text-sm text-rose-600 font-semibold">
+                ⚠️ {submitError}
+              </div>
+            )}
           </form>
 
           {/* Success Modal Overlay */}
@@ -261,7 +276,7 @@ export default function Volunteer() {
                   <div className="space-y-2">
                     <h3 className="text-xl font-extrabold text-secondary">Application Received!</h3>
                     <p className="text-sm text-slate-500">
-                      Thank you for applying. We have simulated the email webhook dispatch. Our community coordinator will message you on WhatsApp to add you to the volunteers channel.
+                      Thank you for applying! A confirmation email has been sent to your inbox. Our community coordinator will message you on WhatsApp within 48 hours to add you to the volunteers channel.
                     </p>
                   </div>
 

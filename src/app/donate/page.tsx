@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import { formatINR } from "@/lib/formatCurrency";
 import { useSearchParams } from "next/navigation";
 import { CreditCard, QrCode, Shield, Check, Heart, Loader2, Smartphone } from "lucide-react";
 import { campaigns } from "@/data/campaigns";
@@ -28,6 +29,8 @@ function DonationForm() {
   const [paymentMethod, setPaymentMethod] = useState<"card" | "upi">("card");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [transactionRef, setTransactionRef] = useState<string>("");
 
   // Dynamic pre-fill from URL
   useEffect(() => {
@@ -58,24 +61,51 @@ function DonationForm() {
   // Generate UPI Deep Link
   const upiLink = `upi://pay?pa=sewaprith@ybl&pn=SewaPrith%20Foundation&am=${amount || 1000}&cu=INR&tn=Donation%20to%20SewaPrith`;
 
-  const handleSubmitDonation = (e: React.FormEvent) => {
+  const handleSubmitDonation = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || amount <= 0) return alert("Please select or enter a valid amount.");
     if (!name || !email || !phone) return alert("Please enter your name, email, and phone number.");
     if (claimTax && (!pan || !address)) return alert("Please fill in your PAN and address to claim 80G tax benefit.");
 
+    const ref = `SP-${Math.floor(Math.random() * 90000000 + 10000000)}`;
+    setTransactionRef(ref);
     setIsProcessing(true);
+    setSubmitError(null);
 
-    // Simulate Payment Gateway Interaction
-    setTimeout(() => {
-      setIsProcessing(false);
+    try {
+      const res = await fetch("/api/donate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          amount,
+          campaign: campaigns.find((c) => c.id === selectedCampaign)?.title ?? "General Welfare Fund",
+          transactionRef: ref,
+          claimTax,
+          pan: claimTax ? pan : undefined,
+          address: claimTax ? address : undefined,
+        }),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error ?? "Donation submission failed. Please try again.");
+      }
+
       setIsSuccess(true);
       confetti({
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 }
       });
-    }, 2500);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Donation submission failed. Please try again.";
+      setSubmitError(message);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (isSuccess) {
@@ -86,10 +116,10 @@ function DonationForm() {
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-extrabold text-secondary">Thank You, {name}!</h2>
-          <p className="text-sm text-slate-500">Your donation of <span className="font-extrabold text-primary">₹{amount.toLocaleString()}</span> has been simulated successfully.</p>
+          <p className="text-sm text-slate-500">Your donation of <span className="font-extrabold text-primary">₹{formatINR(amount)}</span> has been received. A receipt has been sent to <span className="font-semibold text-secondary">{email}</span>.</p>
         </div>
         <div className="bg-slate-50 border border-slate-150 rounded-2xl p-4 text-xs text-slate-500 leading-relaxed text-left space-y-1">
-          <p><span className="font-bold">Transaction Reference:</span> SP-{Math.floor(Math.random() * 90000000 + 10000000)}</p>
+          <p><span className="font-bold">Transaction Reference:</span> {transactionRef}</p>
           <p><span className="font-bold">Date:</span> {new Date().toLocaleDateString("en-IN")}</p>
           <p><span className="font-bold">Allocated To:</span> {campaigns.find(c => c.id === selectedCampaign)?.title || "General Welfare Fund"}</p>
           {claimTax && (
@@ -109,6 +139,7 @@ function DonationForm() {
             setAddress("");
             setClaimTax(false);
             setAmount(1000);
+            setTransactionRef("");
           }}
           className="w-full inline-flex items-center justify-center py-3 rounded-xl text-sm font-bold text-white bg-primary hover:bg-primary-hover transition-colors"
         >
@@ -154,7 +185,7 @@ function DonationForm() {
                     : "bg-slate-50 hover:bg-slate-100 text-secondary border border-slate-100"
                 }`}
               >
-                ₹{amt.toLocaleString()}
+                ₹{formatINR(amt)}
               </button>
             ))}
           </div>
@@ -279,22 +310,30 @@ function DonationForm() {
 
         {/* Checkout Button */}
         {paymentMethod === "card" ? (
-          <button
-            type="submit"
-            disabled={isProcessing}
-            className="w-full inline-flex items-center justify-center py-4 rounded-2xl text-base font-bold text-white bg-accent-coral hover:bg-accent-coral-hover transition-colors shadow-lg shadow-accent-coral/20 cursor-pointer disabled:bg-slate-350 disabled:cursor-not-allowed"
-          >
-            {isProcessing ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Contacting Razorpay Secure Gateway...
-              </>
-            ) : (
-              <>
-                Proceed to Pay ₹{amount.toLocaleString()} Securely
-              </>
+          <>
+            <button
+              type="submit"
+              disabled={isProcessing}
+              className="w-full inline-flex items-center justify-center py-4 rounded-2xl text-base font-bold text-white bg-accent-coral hover:bg-accent-coral-hover transition-colors shadow-lg shadow-accent-coral/20 cursor-pointer disabled:bg-slate-350 disabled:cursor-not-allowed"
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Processing donation...
+                </>
+              ) : (
+                <>
+                  Proceed to Pay ₹{formatINR(amount)} Securely
+                </>
+              )}
+            </button>
+            {/* Inline Error Banner */}
+            {submitError && (
+              <div className="mt-3 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3 text-sm text-rose-600 font-semibold">
+                ⚠️ {submitError}
+              </div>
             )}
-          </button>
+          </>
         ) : (
           <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4 text-center space-y-2 text-xs text-primary font-bold">
             UPI QR fallback is enabled below. Scan with GPay/PhonePe to make instant donations.
@@ -335,7 +374,7 @@ function DonationForm() {
         <div className="w-full text-xs text-slate-500 space-y-1.5 bg-slate-50 rounded-xl p-3 border border-slate-100 font-medium">
           <p><span className="font-bold text-secondary">VPA:</span> sewaprith@ybl</p>
           <p><span className="font-bold text-secondary">Payee:</span> SewaPrith Welfare Foundation</p>
-          <p><span className="font-bold text-secondary">Current Amount:</span> ₹{amount.toLocaleString()}</p>
+          <p><span className="font-bold text-secondary">Current Amount:</span> ₹{formatINR(amount)}</p>
         </div>
 
         {/* Mobile Deep Link */}

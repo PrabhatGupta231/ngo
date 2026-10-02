@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Award, ShieldCheck, HeartHandshake, Eye, Target, Compass, Download, Linkedin, Mail } from "lucide-react";
+import { ShieldCheck, HeartHandshake, Eye, Target, Compass, Linkedin, Mail, BadgeCheck, Banknote } from "lucide-react";
 
 const teamMembers = [
   {
@@ -31,16 +31,6 @@ const teamMembers = [
 ];
 
 export default function About() {
-  const downloadReport = (filename: string) => {
-    // Generate a quick mock text file simulating a PDF download
-    const element = document.createElement("a");
-    const file = new Blob([`SewaPrith Foundation Mock Audited Report - ${filename}. This is a placeholder for the actual PDF.`], {type: 'text/plain'});
-    element.href = URL.createObjectURL(file);
-    element.download = `${filename}.txt`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-  };
 
   return (
     <div className="flex flex-col w-full min-h-screen">
@@ -102,79 +92,73 @@ export default function About() {
         </div>
       </section>
 
-      {/* Trust & Legal Badges */}
-      <section className="py-20 bg-slate-50 border-y border-slate-100">
+      {/* Our Credibility & Trust */}
+      <section className="py-16 bg-slate-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <h2 className="text-xs font-bold text-primary uppercase tracking-widest">Compliance</h2>
-            <h2 className="text-3xl font-extrabold text-secondary tracking-tight">Legal Registrations & Audit Downloads</h2>
-            <p className="text-sm text-slate-500">We operate under full compliance with Indian non-profit regulations and upload quarterly audited ledgers for public scrutiny.</p>
+          <div className="text-center mb-12">
+            <span className="text-xs font-bold text-primary uppercase tracking-widest">Why Trust Us</span>
+            <h2 className="mt-2 text-3xl font-extrabold text-secondary tracking-tight">Our Credibility &amp; Trust</h2>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            {/* Registrations List */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm space-y-6 lg:col-span-2">
-              <h3 className="text-lg font-bold text-secondary border-b border-slate-50 pb-4">NGO Details & Tax Certificates</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">Registered Legal Name</span>
-                  <span className="font-extrabold text-secondary">SewaPrith Welfare Association Foundation</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">NGO Darpan ID (NITI Aayog)</span>
-                  <span className="font-extrabold text-secondary">DL/2026/0401824</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">NGO Registration Number</span>
-                  <span className="font-extrabold text-secondary">NGO/DEL/2026/894372 (Section 8 Companies Act)</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">Income Tax Exemption Status</span>
-                  <span className="font-extrabold text-secondary">12A & 80G Certified (Approved for 50% Tax Rebate)</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">Office PAN Card</span>
-                  <span className="font-extrabold text-secondary">AAAAS9283F</span>
-                </div>
-                <div className="space-y-1">
-                  <span className="text-slate-400 block text-xs uppercase font-bold">GSTIN Registration</span>
-                  <span className="font-extrabold text-secondary">07AAAAS9283F1Z1 (For medical items purchase rebate)</span>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0 }}
+              className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4"
+            >
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <BadgeCheck className="w-6 h-6 text-primary" />
               </div>
-            </div>
-
-            {/* Downloads Card */}
-            <div className="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm space-y-6">
-              <h3 className="text-lg font-bold text-secondary border-b border-slate-50 pb-4">Annual Reports</h3>
-              <p className="text-xs text-slate-500">Download audited statements, income details, program deployment expenses, and active ground drive ledgers.</p>
-              
-              <div className="space-y-3">
-                <button
-                  onClick={() => downloadReport("SewaPrith_Annual_Report_2025")}
-                  className="w-full flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-primary hover:text-primary transition-all text-sm font-bold text-secondary group text-left cursor-pointer"
-                >
-                  <span>Annual Report 2025 (PDF)</span>
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-primary" />
-                </button>
-
-                <button
-                  onClick={() => downloadReport("SewaPrith_Audited_Accounts_Q1_2026")}
-                  className="w-full flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-primary hover:text-primary transition-all text-sm font-bold text-secondary group text-left cursor-pointer"
-                >
-                  <span>Audited Ledgers Q1 2026 (PDF)</span>
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-primary" />
-                </button>
-
-                <button
-                  onClick={() => downloadReport("SewaPrith_80G_Tax_Exemption_Approval")}
-                  className="w-full flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-primary hover:text-primary transition-all text-sm font-bold text-secondary group text-left cursor-pointer"
-                >
-                  <span>80G Exemption Approval (PDF)</span>
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-primary" />
-                </button>
+              <div>
+                <h3 className="text-base font-extrabold text-secondary">Registered Non-Profit</h3>
+                <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                  Incorporated as a <span className="font-semibold text-secondary">Section 8 Non-Profit Organisation</span> under the Ministry of Corporate Affairs, Govt. of India
+                  {" "}(Licence No: <span className="font-mono font-semibold">178498</span>).
+                </p>
               </div>
-            </div>
+            </motion.div>
+
+            {/* Card 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4"
+            >
+              <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                <Banknote className="w-6 h-6 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-secondary">80G Tax Exemption</h3>
+                <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                  Eligible donations qualify for <span className="font-semibold text-secondary">tax deduction benefits</span> under Section 80G
+                  {" "}(Provisional Approval u/s 354).
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Card 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4"
+            >
+              <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+                <ShieldCheck className="w-6 h-6 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-secondary">100% Transparency</h3>
+                <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                  All funds and project expenditures are strictly deployed towards our <span className="font-semibold text-secondary">core charitable initiatives</span> and public welfare.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>

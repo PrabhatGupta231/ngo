@@ -42,7 +42,7 @@ export const campaigns: Campaign[] = [
     category: "Food Relief",
     goal: 300000,
     raised: 285000,
-    image: "https://images.unsplash.com/photo-1594708767771-a7502209ff51?auto=format&fit=crop&w=800&q=80",
+    image: "/food-relief.png",
     excerpt: "Providing fresh, warm, hygienic, nutritious cooked meals to street children and daily wage labourers.",
     story: "Millions suffer from daily malnutrition and hunger. SewaPrith runs a daily community kitchen that prepares fresh, hot meals consisting of rice, lentils, vegetables, and clean water. We serve them to construction workers, rikshaw pullers, street-dwelling children, and abandoned elderly people in temporary shelter hubs. Every ₹50 feeds a person a complete, balanced meal.",
     donorCount: 341,

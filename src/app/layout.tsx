@@ -66,14 +66,15 @@ export default function RootLayout({
     "description": "SewaPrith Foundation is a registered 12A/80G non-profit organization in India dedicated to medical camp setups, slum child education, and food relief drives.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "124, Ground Floor, Sewa Bhawan, Outer Ring Road, Safdarjung Enclave",
-      "addressLocality": "New Delhi",
-      "postalCode": "110029",
+      "streetAddress": "Plot No 20, Nahar Road, Madiyon",
+      "addressLocality": "Lucknow",
+      "addressRegion": "Uttar Pradesh",
+      "postalCode": "226021",
       "addressCountry": "IN"
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+91-9876543210",
+      "telephone": "+91-8417801736",
       "contactType": "donor support",
       "email": "info@sewaprith.org"
     },

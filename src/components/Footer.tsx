@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Heart, Send, Phone, Mail, MapPin } from "lucide-react";
+import Image from "next/image";
+import { Send, Phone, Mail, MapPin, BadgeCheck } from "lucide-react";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -23,24 +24,30 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand & Legal Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-white">
-                <Heart className="w-5 h-5 fill-current" />
-              </div>
-              <div>
-                <span className="text-lg font-bold text-white tracking-tight">SewaPrith</span>
-                <span className="block text-[9px] font-semibold text-primary tracking-widest uppercase">
-                  Foundation
-                </span>
+            <Link href="/" className="flex items-center">
+              <div className="h-[70px] w-[160px] overflow-hidden flex items-center justify-center">
+                <Image
+                  src="/logoo.png"
+                  alt="SewaPrith Foundation"
+                  width={100}
+                  height={64}
+                  className="h-[50px] w-auto object-contain scale-[1.25]"
+                />
               </div>
             </Link>
             <p className="text-sm text-slate-400">
-              SewaPrith Foundation is a registered non-profit organization dedicated to healthcare, education, and disaster relief for underserved communities.
+              SewaPrith Foundation is a registered non-profit organisation dedicated to healthcare, education, and community upliftment for underserved communities.
             </p>
-            <div className="pt-2 text-xs text-slate-400 space-y-1">
-              <p><span className="font-semibold text-slate-300">Reg No:</span> NGO/DEL/2026/894372</p>
-              <p><span className="font-semibold text-slate-300">Darpan ID:</span> DL/2026/0401824</p>
-              <p><span className="font-semibold text-slate-300">Tax Status:</span> 12A & 80G Tax Exempted</p>
+            {/* Clean Trust Badges */}
+            <div className="pt-1 space-y-1.5">
+              <div className="flex items-center gap-2 text-xs text-slate-300">
+                <BadgeCheck className="w-3.5 h-3.5 text-primary shrink-0" />
+                <span><span className="font-semibold text-white">Section 8 Non-Profit</span> · MCA, Govt. of India · Licence No: 178498</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-slate-300">
+                <BadgeCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span><span className="font-semibold text-white">80G Approved</span> · Tax deduction eligible on all donations</span>
+              </div>
             </div>
           </div>
 
@@ -75,15 +82,15 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <span>124, Ground Floor, Sewa Bhawan, Outer Ring Road, Safdarjung Enclave, New Delhi - 110029</span>
+                <span>Plot No 20, Nahar Road, Madiyon, Lucknow, Uttar Pradesh, India - 226021</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-primary transition-colors">+91 98765 43210</a>
+                <a href="tel:+918417801736" className="hover:text-primary transition-colors">+91 8417801736</a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <a href="mailto:info@sewaprith.org" className="hover:text-primary transition-colors">info@sewaprith.org</a>
+                <a href="mailto:sevaprithfoundation@gmail.com" className="hover:text-primary transition-colors">sevaprithfoundation@gmail.com</a>
               </li>
             </ul>
           </div>

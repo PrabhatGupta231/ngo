@@ -74,7 +74,7 @@ export default function Contact() {
             <div className="space-y-1.5 text-sm">
               <h4 className="font-extrabold text-secondary">Office Address</h4>
               <p className="text-slate-500 leading-relaxed">
-                124, Ground Floor, Sewa Bhawan, Outer Ring Road, Safdarjung Enclave, New Delhi - 110029
+                Plot No 20, Nahar Road, Madiyon, Lucknow, Uttar Pradesh, India - 226021
               </p>
             </div>
           </div>
@@ -102,8 +102,8 @@ export default function Contact() {
             </div>
             <div className="space-y-1.5 text-sm">
               <h4 className="font-extrabold text-secondary">Phone Number</h4>
-              <a href="tel:+919876543210" className="text-slate-500 hover:text-primary transition-colors font-semibold block">
-                +91 98765 43210
+              <a href="tel:+918417801736" className="text-slate-500 hover:text-primary transition-colors font-semibold block">
+                +91 8417801736
               </a>
               <span className="text-[10px] text-slate-400 font-bold block">MON-SAT 9:00 AM to 6:00 PM</span>
             </div>
@@ -111,7 +111,7 @@ export default function Contact() {
 
           {/* WhatsApp Direct */}
           <a
-            href="https://wa.me/919876543210?text=Hi!%20I%20have%20a%20query%20regarding%20SewaPrith%20NGO."
+            href="https://wa.me/918417801736?text=Hi!%20I%20have%20a%20query%20regarding%20SewaPrith%20NGO."
             target="_blank"
             rel="noopener noreferrer"
             className="bg-[#25D366]/5 border border-[#25D366]/25 rounded-2xl p-6 shadow-sm flex items-center gap-4 hover:bg-[#25D366]/10 transition-colors group cursor-pointer"

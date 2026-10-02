@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { formatINR } from "@/lib/formatCurrency";
 
 interface CountUpProps {
   end: number;
@@ -55,7 +56,7 @@ export default function CountUp({ end, duration = 2000, suffix = "" }: CountUpPr
 
   return (
     <span ref={elementRef} className="font-bold tabular-nums">
-      {count.toLocaleString()}{suffix}
+      {formatINR(count)}{suffix}
     </span>
   );
 }
